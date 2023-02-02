@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import { SafeAreaView, StyleSheet, View } from "react-native";
+import { Alert, SafeAreaView, StyleSheet, View } from "react-native";
 import WebView from "react-native-webview";
 
 export default function App() {
@@ -12,6 +12,12 @@ export default function App() {
           <WebView
             pullToRefreshEnabled={true}
             allowsBackForwardNavigationGestures={false}
+            onMessage={(event) => {
+              const data = JSON.parse(event.nativeEvent.data);
+              if (data.type === "@@test/message") {
+                Alert.alert("WebViewメッセージ", data.payload.message);
+              }
+            }}
             source={{ uri: "https://kaminorse.github.io/next-pwa-example/" }}
           />
         </View>
